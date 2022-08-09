@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1001818215157",
+    "firebase_url": "https://pinkhome-0007-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "pinkhome-0007",
+    "storage_bucket": "pinkhome-0007.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1001818215157:android:25ceedec8d8048d5cf6bbc",
+        "android_client_info": {
+          "package_name": "com.example.pinkhome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1001818215157-1a8sqt5jrcig5t4c24n5utp4cgjagsva.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqoMAedF_PKW71LQ9xUeyAqz6KYciKtfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1001818215157-1a8sqt5jrcig5t4c24n5utp4cgjagsva.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
