@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.pinkhome.BaseActivity;
 import com.example.pinkhome.R;
@@ -30,8 +31,9 @@ public class RegisterActivity extends BaseActivity {
         loginButton = findViewById(R.id.login);
         registerButton = findViewById(R.id.register);
 
-        userAuthViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userAuthViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         userAuthViewModel.getUserLiveData().observe(this, firebaseUser -> {
+            System.out.println("1111111111111111111111222222222");
             if (firebaseUser != null) {
                 startMainActivity();
             }

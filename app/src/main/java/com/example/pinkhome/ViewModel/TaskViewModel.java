@@ -1,14 +1,20 @@
 package com.example.pinkhome.ViewModel;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.example.pinkhome.Repository.TaskRepository;
 import com.example.pinkhome.model.Task;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TaskViewModel extends AndroidViewModel {
@@ -26,11 +32,17 @@ public class TaskViewModel extends AndroidViewModel {
     }
 
     public void addTask(String description){
-        taskRepository.setTask(description, false);
+        if (!description.equals("")) {
+            taskRepository.setTask(description, false);
+        } else{
+            Toast.makeText(getApplication().getBaseContext(), "Пустое поле", Toast.LENGTH_SHORT).show();
+        }
     }
-    public void setDone(String description){
-        taskRepository.setDone(description);
+    public void setDone(String description, Boolean state){
+        taskRepository.setDone(description, state);
     }
 
-    public LiveData<List<Task>> listenTask(){ return taskRepository.listenTask(); }
+    public LiveData<List<Task>> listenTask(Boolean done){
+        return taskRepository.listenTask(done);
+    }
 }

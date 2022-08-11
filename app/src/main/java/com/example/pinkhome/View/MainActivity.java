@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -105,7 +106,7 @@ public class MainActivity extends BaseActivity {
         progressBarEvents = findViewById(R.id.progressBar);
 
         taskRecycler = findViewById(R.id.today_task).findViewById(R.id.task_recycle);
-        taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
+        taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         taskList = new ArrayList<>();
         adapterTask = new TaskTodayAdapter(this,taskList);
         taskRecycler.setAdapter(adapterTask);
@@ -115,8 +116,8 @@ public class MainActivity extends BaseActivity {
         tasksButton = findViewById(R.id.category).findViewById(R.id.linear_button_category).findViewById(R.id.task).findViewById(R.id.task_button);
 
         username = findViewById(R.id.head).findViewById(R.id.user).findViewById(R.id.login);
-        eventsViewModel = new ViewModelProvider(this).get(ActivitiesViewModel.class);
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        eventsViewModel = ViewModelProviders.of(this).get(ActivitiesViewModel.class);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
     }
 
     private void toEvents() {

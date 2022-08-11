@@ -64,7 +64,7 @@ public class UserRepository {
                     if (task.isSuccessful()){
                         userData.postValue(firebaseAuth.getCurrentUser());
                     } else{
-                        Toast.makeText(app.getApplicationContext(),"Failed login",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(app.getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -75,9 +75,7 @@ public class UserRepository {
     }
 
     public MutableLiveData<FirebaseUser> getUserData() {
-        final MutableLiveData<FirebaseUser> data = new MutableLiveData<>();
-        data.setValue(firebaseAuth.getCurrentUser());
-        return data;
+        return userData;
     }
 
     public MutableLiveData<String> getUserName(){

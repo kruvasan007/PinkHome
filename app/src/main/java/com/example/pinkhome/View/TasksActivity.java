@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pinkhome.BaseActivity;
@@ -24,33 +24,42 @@ import java.util.ArrayList;
 
 public class TasksActivity extends BaseActivity {
     private ImageButton backButton;
-    private Button addButton, doneButton;
-    private RecyclerView taskRecycler;
+    private Button addButton;
+    private ImageButton doneButton;
+    private RecyclerView taskCurrentRecycler, taskDoneRecycler;
     private InputMethodManager imm;
     private TaskViewModel taskViewModel;
-    private ArrayList<Task> taskList;
-    private TasksAdapter adapter;
+    private ArrayList<Task> taskCurrentList, taskDoneList;
+    private TasksAdapter adapterCurrent, adapterDone;
     private ConstraintLayout overKeyboard;
     private EditText addTask;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
         initLayout();
-        getTasks();
+        getCurrentTasks();
+        getDoneTasks();
         backButton.setOnClickListener(v -> toMainActivity());
         addButton.setOnClickListener(v -> addTask());
         doneButton.setOnClickListener(v -> doneTask());
     }
 
-    private void getTasks() {
-        taskViewModel.listenTask().observe(this, items -> {
-            taskList.clear();
-            for (Task task: items) {
-                if(!task.getDone()) taskList.add(task);
-            }
-            adapter.notifyDataSetChanged();
+    private void getCurrentTasks() {
+        taskViewModel.listenTask(false).observe(this, items -> {
+            taskCurrentList.clear();
+            taskCurrentList.addAll(items);
+            adapterCurrent.notifyDataSetChanged();
+        });
+    }
+
+    private void getDoneTasks() {
+        taskViewModel.listenTask(true).observe(this, items -> {
+            taskDoneList.clear();
+            taskDoneList.addAll(items);
+            adapterDone.notifyDataSetChanged();
         });
     }
 
@@ -67,6 +76,7 @@ public class TasksActivity extends BaseActivity {
         taskViewModel.addTask(addTask.getText().toString());
         addTask.clearFocus();
         imm.hideSoftInputFromWindow(addTask.getWindowToken(),0);
+        addTask.setText("");
     }
 
     private void initLayout() {
@@ -76,12 +86,15 @@ public class TasksActivity extends BaseActivity {
         doneButton = findViewById(R.id.over_keyboard).findViewById(R.id.done_button);
         overKeyboard = findViewById(R.id.over_keyboard);
         backButton = findViewById(R.id.back_button);
-        taskRecycler = findViewById(R.id.today_task).findViewById(R.id.recycler_layout);
-        taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
-        taskList = new ArrayList<>();
-        adapter = new TasksAdapter(this,taskList);
-        taskRecycler.setAdapter(adapter);
-
+        taskCurrentRecycler = findViewById(R.id.today_task).findViewById(R.id.recycler_layout);
+        taskDoneRecycler = findViewById(R.id.done_today_task).findViewById(R.id.recycler_layout_done);
+        taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+        taskCurrentList = new ArrayList<>();
+        taskDoneList = new ArrayList<>();
+        adapterCurrent = new TasksAdapter(this, taskCurrentList);
+        adapterDone = new TasksAdapter(this, taskDoneList);
+        taskCurrentRecycler.setAdapter(adapterCurrent);
+        taskDoneRecycler.setAdapter(adapterDone);
     }
 
     private void toMainActivity() {

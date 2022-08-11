@@ -36,6 +36,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:src="@drawable/avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -98,6 +99,7 @@
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:src="@drawable/events_button"
                     android:id="@+id/event_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -122,6 +124,7 @@
                 android:orientation="vertical">
 
                 <ImageButton
+                    android:src="@drawable/deal_button"
                     android:id="@+id/task_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

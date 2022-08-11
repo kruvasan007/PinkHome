@@ -25,6 +25,7 @@ public class UserViewModel extends AndroidViewModel {
 
     public void login(String email, String password) {
         authRepository.singUpUser(email, password);
+        userLiveData = authRepository.getUserData();
     }
 
     public void logOut(){
@@ -33,6 +34,7 @@ public class UserViewModel extends AndroidViewModel {
 
     public void register(String email, String password) {
         authRepository.registerUser(email, password);
+        userLiveData = authRepository.getUserData();
     }
 
     public void updateNickName(String nickName){

@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +44,7 @@ public class EventsActivity extends BaseActivity {
         initRecycler();
         backButton.setOnClickListener(v -> toMainActivity());
         addButton.setOnClickListener(v -> createNewCard());
-        activitiesViewModel = new ViewModelProvider(this).get(ActivitiesViewModel.class);
+        activitiesViewModel = ViewModelProviders.of(this).get(ActivitiesViewModel.class);
         getActivities();
 
         MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();

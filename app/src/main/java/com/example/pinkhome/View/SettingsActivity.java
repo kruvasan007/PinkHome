@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.pinkhome.BaseActivity;
 import com.example.pinkhome.R;
@@ -30,7 +31,7 @@ public class SettingsActivity extends BaseActivity {
         logoutButton = findViewById(R.id.logout);
         backButton = findViewById(R.id.back_button);
         nickName = findViewById(R.id.nickName);
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         backButton.setOnClickListener(v -> toMainActivity());
         logoutButton.setOnClickListener(v -> {

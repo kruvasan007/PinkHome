@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,7 +32,9 @@
         android:id="@+id/today_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/back_button">
 
@@ -43,12 +46,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-20dp"
+                android:layout_marginBottom="-16dp"
                 android:fontFamily="@font/neue_machine_ultrabold"
                 android:paddingLeft="16dp"
                 android:text="На сегодня"
                 android:textColor="@color/yellow"
-                android:textSize="48dp"
+                android:textSize="42sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -62,14 +65,54 @@
             tools:listitem="@layout/task_item" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/done_today_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/today_task">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/task_gray_header_style">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-16dp"
+                android:fontFamily="@font/neue_machine_ultrabold"
+                android:paddingLeft="16dp"
+                android:text="Выполнено"
+                android:textColor="@color/yellow"
+                android:textSize="42sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_layout_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/task_item"/>
+    </LinearLayout>
+
     <Button
+        android:text="Добавить"
         android:id="@+id/add_button"
+        android:textAllCaps="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:fontFamily="@font/neue_machine_regular"
+        android:layout_margin="24dp"
+        android:fontFamily="@font/montserrat_regular"
         android:textColor="@color/black"
-        android:textSize="14sp"
+        android:drawableLeft="@drawable/ic_pensil"
+        android:textSize="16sp"
+        android:backgroundTint="@color/yellow_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -94,10 +137,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent" />
 
-        <Button
+        <ImageButton
+            android:src="@drawable/ic_back_arrow"
+            android:rotation="90"
+            android:background="@null"
             android:id="@+id/done_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:scaleY="0.7"
+            android:scaleX="0.7"
+            android:layout_height="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

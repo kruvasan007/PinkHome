@@ -46,7 +46,8 @@ public class TaskRepository {
         });
         return data;
     }
-    public MutableLiveData<List<Task>> listenTask(){
+
+    public MutableLiveData<List<Task>> listenTask(Boolean done){
         final MutableLiveData<List<Task>> data = new MutableLiveData<>();
         CollectionReference collectionReference = db.collection("users")
                 .document(firebaseAuth.getCurrentUser().getUid())
@@ -56,10 +57,12 @@ public class TaskRepository {
                 List<DocumentSnapshot> documentSnapshot = value.getDocuments();
                 List<Task> tasks = new ArrayList<>();
                 for (DocumentSnapshot document: documentSnapshot) {
-                    Task item = new Task();
-                    item.setDescription(String.valueOf(document.getData().get("description")));
-                    item.setDone(Boolean.valueOf(String.valueOf(document.getData().get("done"))));
-                    tasks.add(item);
+                    if(Boolean.valueOf(String.valueOf(document.getData().get("done"))).equals(done)){
+                        Task item = new Task();
+                        item.setDescription(String.valueOf(document.getData().get("description")));
+                        item.setDone(Boolean.valueOf(String.valueOf(document.getData().get("done"))));
+                        tasks.add(item);
+                    }
                 }
                 data.setValue(tasks);
             }
@@ -67,10 +70,10 @@ public class TaskRepository {
         return data;
     }
 
-    public void setDone(String descr){
+    public void setDone(String descr, Boolean state){
         db.collection("users")
                 .document(firebaseAuth.getCurrentUser().getUid())
-                .collection("tasks").document(descr).update("done", true);
+                .collection("tasks").document(descr).update("done", state);
     }
 
     public void setTask(String descr, Boolean done) {
