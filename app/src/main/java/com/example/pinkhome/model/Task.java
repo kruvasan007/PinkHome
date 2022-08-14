@@ -3,6 +3,7 @@ package com.example.pinkhome.model;
 public class Task {
     private String description;
     private Boolean done;
+    private int id;
 
     public String getDescription() {
         return description;
@@ -18,5 +19,13 @@ public class Task {
 
     public void setDone(Boolean done) {
         this.done = done;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

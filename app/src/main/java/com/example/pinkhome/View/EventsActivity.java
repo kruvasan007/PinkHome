@@ -22,7 +22,10 @@ import com.example.pinkhome.model.Activities;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textview.MaterialTextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class EventsActivity extends BaseActivity {
     private ImageButton backButton, addButton;
@@ -52,7 +55,13 @@ public class EventsActivity extends BaseActivity {
         final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
         dateText.setOnClickListener(v -> materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER"));
         materialDatePicker.addOnPositiveButtonClickListener(
-                selection -> dateText.setText(materialDatePicker.getHeaderText()));
+                selection -> {
+                    Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                    calendar.setTimeInMillis((Long) selection);
+                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                    String formattedDate = format.format(calendar.getTime());
+                    dateText.setText(formattedDate);
+                });
     }
 
     private void initRecycler() {
@@ -72,7 +81,6 @@ public class EventsActivity extends BaseActivity {
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
-
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 activitiesViewModel.deleteActivities(eventsArrayList.get(viewHolder.getAdapterPosition()).getNameActivity());
@@ -94,7 +102,7 @@ public class EventsActivity extends BaseActivity {
     private void createNewCard() {
         String name = nameText.getText().toString();
         String date = dateText.getText().toString();
-        activitiesViewModel.createActivities(name,date);
+        activitiesViewModel.createActivities(name, date);
         dateText.setText("");
         nameText.setText("");
         nameText.clearFocus();

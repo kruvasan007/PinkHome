@@ -22,4 +22,6 @@ public class Activities {
         this.nameActivity = nameActivity;
     }
 
+    public String getReverseDate(){ return new StringBuilder(this.date).reverse().toString(); }
+
 }

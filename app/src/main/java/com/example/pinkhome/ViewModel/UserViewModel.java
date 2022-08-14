@@ -38,10 +38,10 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     public void updateNickName(String nickName){
-        if(!nickName.equals("")) {
+        if(!nickName.equals("") && nickName.length() >= 1) {
             authRepository.setUserName(nickName);
         } else
-            Toast.makeText(getApplication().getApplicationContext(), "Пустоей поле",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplication().getApplicationContext(), "Недопустимый ник",Toast.LENGTH_SHORT).show();
     }
 
     public LiveData<FirebaseUser> getUserLiveData() {

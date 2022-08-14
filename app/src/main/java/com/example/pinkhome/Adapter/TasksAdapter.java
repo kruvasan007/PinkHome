@@ -2,6 +2,7 @@ package com.example.pinkhome.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -22,8 +23,9 @@ import com.example.pinkhome.model.Task;
 import com.example.pinkhome.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> {
+public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder>  {
     private ArrayList<Task> data;
     private final TaskViewModel taskViewModel;
 
@@ -47,6 +49,24 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void onRowMoved(int oldPosition, int newPosition) {
+        if (oldPosition < newPosition) {
+            for (int i = oldPosition; i < newPosition; i++) {
+                Collections.swap(data, i, i + 1);
+            }
+        } else {
+            for (int i = oldPosition; i > newPosition; i--) {
+                Collections.swap(data, i, i - 1);
+            }
+        }
+        notifyItemMoved(oldPosition, newPosition);
+    }
+
+    @SuppressLint("ResourceAsColor")
+    public void onRowSelected(ViewHolder vH) {
+        vH.itemView.setBackgroundColor(R.color.gray);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
