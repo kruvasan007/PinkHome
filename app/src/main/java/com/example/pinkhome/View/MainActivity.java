@@ -2,60 +2,66 @@ package com.example.pinkhome.View;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pinkhome.Adapter.ActivitiesAdapter;
-import com.example.pinkhome.Adapter.EmptyActivityAdapter;
-import com.example.pinkhome.Adapter.TaskTodayAdapter;
+import com.bumptech.glide.request.transition.ViewPropertyTransition;
 import com.example.pinkhome.Adapter.TimeAdapter;
 import com.example.pinkhome.BaseActivity;
+import com.example.pinkhome.Day;
+import com.example.pinkhome.Fragments.EventsFragment;
+import com.example.pinkhome.Fragments.TaskFragment;
 import com.example.pinkhome.R;
-import com.example.pinkhome.ViewModel.ActivitiesViewModel;
-import com.example.pinkhome.ViewModel.TaskViewModel;
 import com.example.pinkhome.ViewModel.TimeViewModel;
 import com.example.pinkhome.ViewModel.UserViewModel;
-import com.example.pinkhome.model.Activities;
-import com.example.pinkhome.model.Task;
 import com.example.pinkhome.model.TimeItem;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import io.getstream.avatarview.AvatarView;
 
 public class MainActivity extends BaseActivity {
-    private RecyclerView eventsRecycle, taskRecycler, timeRecycler;
+    private RecyclerView  timeRecycler;
 
-    private LinearLayoutManager layoutManager;
-    private ArrayList<Activities> eventsArrayList = new ArrayList<>();
+    private TextView lastButton;
+
+    private int time;
+    private EditText input;
+    private String head, descr;
     private ArrayList<TimeItem> timeItemList = new ArrayList<>();
-    private ArrayList<Task> taskList = new ArrayList<>();
-    private ActivitiesViewModel eventsViewModel;
     private UserViewModel userViewModel;
-    private ActivitiesAdapter adapterActivities;
-    private TextView username;
+    private FragmentManager firstFragmentManager, secondFragmentManager;
+    private String dayOfWeek;
+    private TextView username, dayText;
     private AvatarView avatarView;
     private TimeAdapter timeAdapter;
     private ImageButton settings;
     private Button addTimeItemButton;
-    private ImageButton tasksButton, eventsButton;
-    private ProgressBar progressBarEvents, progressBarUser;
-    private TaskViewModel taskViewModel;
-    private TaskTodayAdapter adapterTask;
+    private TextView tasksButton, eventsButton, mainButton;
+    private ProgressBar progressBarUser;
     private TimeViewModel timeViewModel;
+    private TaskFragment mainTaskFragment;
+    private EventsFragment mainEventFragment;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -64,25 +70,26 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initLayout();
-        getActivities();
-        getTasks();
         getTimeItems();
         setUserData();
+
 
         settings.setOnClickListener(v -> toSettings());
         eventsButton.setOnClickListener(v -> toEvents());
         tasksButton.setOnClickListener(v -> toTasks());
-        addTimeItemButton.setOnClickListener(v -> addTimeItem());
+        mainButton.setOnClickListener(v -> toMain());
 
-        eventsRecycle.setOnTouchListener((v, event) -> {
-            if (eventsRecycle.getAdapter().getClass().getName().equals(EmptyActivityAdapter.class.getName())) {
-                toEvents();
-                return true;
-            } else return false;
-        });
+        addTimeItemButton.setOnClickListener(v -> addTimeItem());
+        dayText.setText(Day.valueOf("DAY_"+dayOfWeek).getDay());
     }
 
     private void addTimeItem() {
+        input = new EditText(this);
+        input.setMaxWidth(15);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
         MaterialTimePicker materialTimePicker = new MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
                 .setHour(12)
@@ -91,34 +98,43 @@ public class MainActivity extends BaseActivity {
                 .build();
         materialTimePicker.show(getSupportFragmentManager(), "DATE_PICKER");
         materialTimePicker.addOnPositiveButtonClickListener(v -> {
-            timeViewModel.addTimeItem(materialTimePicker.getHour()+"",materialTimePicker.getMinute()+"",materialTimePicker.getHour()+":"+materialTimePicker.getMinute(),timeItemList.size());
+            time = materialTimePicker.getHour() * 60 + materialTimePicker.getMinute();
+            getHead();
         });
     }
 
-    private void getActivities() {
-        eventsViewModel.getActivitiesResponse().observe(this, events -> {
-            progressBarEvents.setVisibility(View.INVISIBLE);
-            if (events.size() != 0) {
-                eventsArrayList.addAll(events);
-                adapterActivities.notifyDataSetChanged();
-            } else {
-                eventsRecycle.setAdapter(new EmptyActivityAdapter());
-            }
-        });
+    private void getHead() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Название")
+                .setView(input)
+                .setPositiveButton("ok", (dialog, which) -> {
+                    head = String.valueOf(input.getText());
+                    dialog.dismiss();
+                    getDescription();
+                })
+                .show();
     }
 
-    private void getTasks() {
-        taskViewModel.getTaskLiveData().observe(this, items -> {
-            for (Task task : items) {
-                if (!task.getDone()) taskList.add(task);
-                if (taskList.size() == 3) break;
-            }
-            adapterTask.notifyDataSetChanged();
-        });
+    private void getDescription() {
+        input = new EditText(this);
+        input.setMaxWidth(15);
+        input.setPadding(8,8,8,8);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Описание")
+                .setView(input)
+                .setPositiveButton("ok", (dialog, which) -> {
+                    descr = String.valueOf(input.getText());
+                    timeViewModel.addTimeItem(head, descr, String.valueOf(time), dayOfWeek, timeItemList.size());
+                })
+                .show();
     }
 
     private void getTimeItems() {
-        timeViewModel.listenTimeItem().observe(this, items -> {
+        timeViewModel.listenTimeItem(dayOfWeek).observe(this, items -> {
             timeItemList.clear();
             timeItemList.addAll(items);
             timeAdapter.notifyDataSetChanged();
@@ -138,34 +154,44 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initLayout() {
+        dayOfWeek = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
         ConstraintLayout mainContent = findViewById(R.id.main_content);
-        progressBarUser = mainContent.findViewById(R.id.head).findViewById(R.id.progressUser);
-        eventsRecycle = mainContent.findViewById(R.id.recycler_layout_activity);
-        progressBarEvents = mainContent.findViewById(R.id.progressBar);
-        avatarView = mainContent.findViewById(R.id.head).findViewById(R.id.user).findViewById(R.id.avatar);
-        taskRecycler = mainContent.findViewById(R.id.today_task).findViewById(R.id.task_recycle);
-        settings = mainContent.findViewById(R.id.head).findViewById(R.id.settings_button);
-        eventsButton = mainContent.findViewById(R.id.category).findViewById(R.id.linear_button_category).findViewById(R.id.event).findViewById(R.id.event_button);
-        tasksButton = mainContent.findViewById(R.id.category).findViewById(R.id.linear_button_category).findViewById(R.id.task).findViewById(R.id.task_button);
-        username = mainContent.findViewById(R.id.head).findViewById(R.id.user).findViewById(R.id.login);
-        timeRecycler = findViewById(R.id.bottom_schedule).findViewById(R.id.recycler_layout_time);
+        progressBarUser = mainContent.findViewById(R.id.progressUser);
+        avatarView = mainContent.findViewById(R.id.user).findViewById(R.id.avatar);
+
+        firstFragmentManager = getSupportFragmentManager();
+        mainTaskFragment = new TaskFragment();
+        firstFragmentManager.beginTransaction()
+                .replace(R.id.first_container, mainTaskFragment)
+                .addToBackStack("main").commit();
+
+        secondFragmentManager = getSupportFragmentManager();
+        mainEventFragment = new EventsFragment();
+        mainEventFragment.setVisibilityCard(false);
+        secondFragmentManager.beginTransaction()
+                .replace(R.id.two_container, mainEventFragment).commit();
+
+        dayText = mainContent.findViewById(R.id.day_of_week);
+        settings = mainContent.findViewById(R.id.settings_button);
+
+        //category button
+        tasksButton = mainContent.findViewById(R.id.category).findViewById(R.id.task);
+        mainButton = mainContent.findViewById(R.id.category).findViewById(R.id.all_button);
+        eventsButton = mainContent.findViewById(R.id.category).findViewById(R.id.event);
+        lastButton = mainButton;
+        mainButton.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
+        username = mainContent.findViewById(R.id.user).findViewById(R.id.login);
         addTimeItemButton = findViewById(R.id.bottom_schedule).findViewById(R.id.add_button);
 
-        eventsViewModel = ViewModelProviders.of(this).get(ActivitiesViewModel.class);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         timeViewModel = ViewModelProviders.of(this).get(TimeViewModel.class);
 
-        layoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        eventsRecycle.setLayoutManager(layoutManager);
-        adapterActivities = new ActivitiesAdapter(MainActivity.this, eventsArrayList);
-        adapterTask = new TaskTodayAdapter(this, taskList);
+        timeRecycler = findViewById(R.id.bottom_schedule).findViewById(R.id.recycler_layout_time);
         timeAdapter = new TimeAdapter(this, timeItemList);
         timeRecycler.setAdapter(timeAdapter);
-        eventsRecycle.setAdapter(adapterActivities);
-        taskRecycler.setAdapter(adapterTask);
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -180,10 +206,13 @@ public class MainActivity extends BaseActivity {
         }).attachToRecyclerView(timeRecycler);
     }
 
+    @SuppressLint("PrivateResource")
     private void toEvents() {
-        Intent intent = new Intent(this, EventsActivity.class);
-        startActivity(intent);
-        finish();
+        lastButton.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+        eventsButton.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        lastButton = eventsButton;
+        firstFragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        mainEventFragment.setVisibilityCard(true);
     }
 
     private void toSettings() {
@@ -193,8 +222,15 @@ public class MainActivity extends BaseActivity {
     }
 
     private void toTasks() {
-        Intent intent = new Intent(this, TasksActivity.class);
-        startActivity(intent);
-        finish();
+    }
+
+    private void toMain(){
+        lastButton.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+        mainButton.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        lastButton = mainButton;
+        firstFragmentManager.beginTransaction()
+                .setCustomAnimations(R.animator.slide_in_left, R.animator.fade_in)
+                .replace(R.id.first_container, new TaskFragment()).addToBackStack("main").commit();
+        mainEventFragment.setVisibilityCard(false);
     }
 }

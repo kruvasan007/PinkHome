@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="126dp"
-    android:layout_height="164dp"
+    android:layout_width="160dp"
+    android:layout_height="212dp"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginBottom="12dp"
     android:background="@drawable/ic_card_backdround_1">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:id="@+id/square"
+        android:layout_height="130dp"
+        android:background="@color/green_white"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"/>
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="43dp"
+        android:layout_height="wrap_content"
+        android:maxLength="36"
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="16dp"
         android:text="День рождения"
         android:fontFamily="@font/neue_machine_ultrabold"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"/>
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:text="13 июля"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:fontFamily="@font/montserrat_regular"
+        android:text="13/08/22"
+        android:layout_marginRight="16dp"
+        android:fontFamily="@font/pt_mono_regular"
         android:textColor="@color/black"
-        android:textSize="16dp"/>
+        android:textSize="12dp"/>
 </LinearLayout>

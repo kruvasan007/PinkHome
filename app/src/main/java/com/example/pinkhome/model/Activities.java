@@ -21,7 +21,4 @@ public class Activities {
     public void setNameActivity(String nameActivity) {
         this.nameActivity = nameActivity;
     }
-
-    public String getReverseDate(){ return new StringBuilder(this.date).reverse().toString(); }
-
 }

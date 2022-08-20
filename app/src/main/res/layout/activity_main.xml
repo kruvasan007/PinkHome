@@ -3,11 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".View.MainActivity">
+    tools:context=".View.MainActivity"
+    android:background="@color/white_gray">
 
-    <include layout="@layout/main_content"
-        android:id="@+id/main_content"/>
-
+    <include layout="@layout/main_content"/>
     <include layout="@layout/bottom_schedule"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

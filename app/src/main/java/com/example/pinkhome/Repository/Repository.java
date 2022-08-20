@@ -1,5 +1,6 @@
 package com.example.pinkhome.Repository;
 
+import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.util.Log;
 
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.MetadataChanges;
 import com.google.gson.internal.bind.JsonTreeReader;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,26 +36,17 @@ public class Repository {
         db = FirebaseFirestore.getInstance();
     }
 
-    public LiveData<List<Activities>> getActivities() {
-        MutableLiveData<List<Activities>> data = new MutableLiveData<>();
-        CollectionReference collectionReference = db.collection("users").document(mAuth.getCurrentUser().getUid()).collection("activities");
-        collectionReference.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                List<DocumentSnapshot> documentSnapshot = task.getResult().getDocuments();
-                List<Activities> activities = new ArrayList<>();
-                for (DocumentSnapshot document : documentSnapshot) {
-                    Activities activity = new Activities();
-                    activity.setNameActivity(String.valueOf(document.getData().get("name")));
-                    activity.setDate(String.valueOf(document.getData().get("date")));
-                    activities.add(activity);
-                }
-                activities.sort(Comparator.comparing(Activities::getReverseDate));
-                data.setValue(activities);
-            } else {
-                Log.d("E", "get failed with ", task.getException());
-            }
-        });
-        return data;
+    public void deleteItem(String nameDocument, String nameCollection) {
+        db.collection("users").document(mAuth.getCurrentUser().getUid())
+                .collection(nameCollection).document(nameDocument)
+                .delete();
+    }
+
+    public void createItem(Map<String, Object> item, String nameDocument, String nameCollection) {
+        db.collection("users").document(mAuth.getCurrentUser().getUid())
+                .collection(nameCollection)
+                .document(nameDocument)
+                .set(item);
     }
 
     public LiveData<List<Activities>> listenActivities() {
@@ -68,47 +61,38 @@ public class Repository {
                 activity.setDate(String.valueOf(document.getData().get("date")));
                 activities.add(activity);
             }
-            activities.sort(Comparator.comparing(Activities::getReverseDate));
+            activities.sort(new Comparator<Activities>() {
+                DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+                @Override
+                public int compare(Activities lhs, Activities rhs) {
+                    try {
+                        return f.parse(lhs.getDate()).compareTo(f.parse(rhs.getDate()));
+                    } catch (ParseException e) {
+                        throw new IllegalArgumentException(e);
+                    }
+                }
+            });
             data.setValue(activities);
         });
         return data;
     }
 
-    public void deleteActivities(String name) {
-        db.collection("users").document(mAuth.getCurrentUser().getUid())
-                .collection("activities").document(name)
-                .delete();
-    }
-
-    public void createActivities(String name, String date) {
-        Map<String, Object> activity = new HashMap<>();
-        activity.put("name", name);
-        activity.put("date", date);
-        db.collection("users").document(mAuth.getCurrentUser().getUid())
-                .collection("activities")
-                .document(name)
-                .set(activity);
-    }
-
-    public void createTimeItem(Map<String, Object> item, String name) {
-        db.collection("users").document(mAuth.getCurrentUser().getUid())
-                .collection("timeItem")
-                .document(name)
-                .set(item);
-    }
-
-    public LiveData<List<TimeItem>> listenTimeItem() {
+    public LiveData<List<TimeItem>> listenTimeItem(String day) {
         MutableLiveData<List<TimeItem>> data = new MutableLiveData<>();
         CollectionReference collectionReference = db.collection("users").document(mAuth.getCurrentUser().getUid()).collection("timeItem");
         collectionReference.addSnapshotListener(MetadataChanges.INCLUDE, (value, e) -> {
             List<DocumentSnapshot> documentSnapshot = value.getDocuments();
             List<TimeItem> times = new ArrayList<>();
             for (DocumentSnapshot document : documentSnapshot) {
-                TimeItem timeItem = new TimeItem();
-                timeItem.setHead(String.valueOf(document.getData().get("head")));
-                timeItem.setDescription(String.valueOf(document.getData().get("description")));
-                timeItem.setTime(String.valueOf(document.getData().get("time")));
-                times.add(timeItem);
+                System.out.println(day+" "+ document.getData().get("day"));
+                if(document.getData().get("day").equals(day)){
+                    TimeItem timeItem = new TimeItem();
+                    timeItem.setHead(String.valueOf(document.getData().get("head")));
+                    timeItem.setDescription(String.valueOf(document.getData().get("description")));
+                    timeItem.setTime(Integer.parseInt(String.valueOf(document.getData().get("time"))));
+                    timeItem.setDay(String.valueOf(document.getData().get("day")));
+                    times.add(timeItem);
+                }
             }
             times.sort(Comparator.comparing(TimeItem::getTime));
             data.setValue(times);
@@ -172,27 +156,11 @@ public class Repository {
                 .collection("tasks").document(descr).update("done", state);
     }
 
-    public void setTask(String descr, Boolean done, int id) {
-        Map<String, Object> item = new HashMap<>();
-        item.put("description", descr);
-        item.put("done", done);
-        item.put("id", id);
-        db.collection("users")
-                .document(mAuth.getCurrentUser().getUid())
-                .collection("tasks").document(descr).set(item);
-    }
-
     public void changeId(String description, int id) {
         db.collection("users")
                 .document(mAuth.getCurrentUser().getUid())
                 .collection("tasks")
                 .document(description)
                 .update("id", id);
-    }
-
-    public void deleteTimeItem(String name) {
-        db.collection("users").document(mAuth.getCurrentUser().getUid())
-                .collection("timeItem").document(name)
-                .delete();
     }
 }

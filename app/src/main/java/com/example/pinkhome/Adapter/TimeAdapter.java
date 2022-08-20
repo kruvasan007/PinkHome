@@ -51,7 +51,9 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.ViewHolder> {
         public void bind(TimeItem timeItem) {
             header.setText(timeItem.getHead());
             description.setText(timeItem.getDescription());
-            time.setText(timeItem.getTime());
+            int hour = timeItem.getTime() / 60;
+            int minutes = timeItem.getTime() % 60;
+            time.setText(hour+":"+minutes);
         }
     }
 }

@@ -22,19 +22,20 @@ public class TimeViewModel extends AndroidViewModel {
         repository = new Repository();
     }
 
-    public void addTimeItem(String head, String description, String time, int id){
+    public void addTimeItem(String head, String description, String time, String day, int id){
         if(id < 6) {
             Map<String, Object> item = new HashMap<>();
             item.put("head", head);
             item.put("description", description);
             item.put("time", time);
-            repository.createTimeItem(item, head);
+            item.put("day", day);
+            repository.createItem(item, head, "timeItem");
         } else Toast.makeText(getApplication().getApplicationContext(),"Куда столько дел, ты чо...", Toast.LENGTH_SHORT).show();
     }
 
-    public LiveData<List<TimeItem>> listenTimeItem(){ return repository.listenTimeItem();}
+    public LiveData<List<TimeItem>> listenTimeItem(String day){ return repository.listenTimeItem(day);}
 
     public void deleteTimeItem(String name) {
-        repository.deleteTimeItem(name);
+        repository.deleteItem(name,"timeItem");
     }
 }

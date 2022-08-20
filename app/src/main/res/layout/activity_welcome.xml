@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.PinkHome"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent">
 
     <TextView
@@ -11,7 +14,6 @@
         android:layout_marginTop="48dp"
         android:fontFamily="@font/neue_machine_ultrabold"
         android:text="Добро \nпожаловать!"
-        android:textColor="@color/black"
         android:textSize="52sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -23,7 +25,6 @@
         android:fontFamily="@font/neue_machine_regular"
         android:padding="4dp"
         android:text="Email"
-        android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintLeft_toLeftOf="@+id/email" />
@@ -47,7 +48,6 @@
         android:fontFamily="@font/neue_machine_regular"
         android:padding="4dp"
         android:text="Пароль"
-        android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintLeft_toLeftOf="@+id/password" />
@@ -73,7 +73,6 @@
         android:background="@drawable/yellow_button_style"
         android:fontFamily="@font/neue_machine_ultrabold"
         android:text="Войти"
-        android:textColor="@color/black"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -86,6 +85,7 @@
         android:fontFamily="@font/neue_machine_regular"
         android:text="Зарегистрироваться"
         android:textSize="12dp"
+        android:textColor="#666666"
         android:layout_margin="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

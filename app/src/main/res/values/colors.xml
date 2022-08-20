@@ -2,6 +2,11 @@
 <resources>
     <color name="yellow">#FFD338</color>
     <color name="yellow_white">#FFEEC2</color>
+    <color name="pink_white">#FEA2B2</color>
+    <color name="pink">#E35555</color>
+    <color name="green_white">#F0FF45</color>
+    <color name="white_gray">#CCCCCC</color>
+    <color name="black_gray">#FFEEC2</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_200">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

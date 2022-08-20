@@ -10,7 +10,9 @@ import androidx.lifecycle.LiveData;
 import com.example.pinkhome.Repository.Repository;
 import com.example.pinkhome.model.Task;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TaskViewModel extends AndroidViewModel {
     private Repository repo;
@@ -28,7 +30,11 @@ public class TaskViewModel extends AndroidViewModel {
 
     public void addTask(String description, int id){
         if (!description.equals("")) {
-            repo.setTask(description, false, id);
+            Map<String, Object> item = new HashMap<>();
+            item.put("description", description);
+            item.put("done", false);
+            item.put("id", id);
+            repo.createItem(item, description, "tasks");
         } else{
             Toast.makeText(getApplication().getBaseContext(), "Пустое поле", Toast.LENGTH_SHORT).show();
         }

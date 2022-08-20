@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     android:layout_width="match_parent"
-    android:layout_height="510dp"
+    android:layout_height="556dp"
     android:id="@+id/bottom_schedule"
-    android:layout_margin="-2dp"
+    android:layout_margin="-4dp"
     android:background="@drawable/bottom_shedule_style"
-    app:behavior_peekHeight="120dp">
+    app:behavior_peekHeight="32dp">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/line_slifer"
         app:tint="@color/black" />
+
     <androidx.recyclerview.widget.RecyclerView
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         tools:listitem="@layout/item_time"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="32dp" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

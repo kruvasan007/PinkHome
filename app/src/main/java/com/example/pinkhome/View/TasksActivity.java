@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pinkhome.BaseActivity;
-import com.example.pinkhome.ItemMoveCallback;
 import com.example.pinkhome.R;
 import com.example.pinkhome.ViewModel.TaskViewModel;
 import com.example.pinkhome.Adapter.TasksAdapter;
@@ -25,7 +24,6 @@ import com.example.pinkhome.model.Task;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class TasksActivity extends BaseActivity {
     private ImageButton backButton;

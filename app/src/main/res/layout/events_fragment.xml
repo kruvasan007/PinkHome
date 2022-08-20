@@ -1,33 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white">
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/neue_machine_ultrabold"
-        android:padding="16dp"
-        android:text="События"
-        android:textColor="@color/black"
-        android:textSize="28sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/back_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
-        android:background="@color/white"
-        android:padding="16dp"
-        android:src="@drawable/back_arrow"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -36,46 +12,47 @@
         android:layout_marginTop="64dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back_button"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_layout_activity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
         android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:paddingStart="108dp"
+        android:paddingEnd="108dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/back_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/activity_button" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/new_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/todo_today_style"
-        android:gravity="right"
         android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:id="@+id/new_card"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recycler_layout_activity">
 
         <EditText
             android:id="@+id/name"
-            android:inputType="text"
-            android:maxLength="20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="34dp"
-            android:background="@color/yellow"
+            android:background="@color/pink"
             android:fontFamily="@font/neue_machine_ultrabold"
             android:hint="Введите название"
             android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="20"
             android:paddingLeft="20dp"
             android:paddingTop="8dp"
             android:textColor="@color/black"
@@ -93,23 +70,21 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/date"
-                app:layout_constraintTop_toBottomOf="@+id/name"
-                android:hint="Выберите дату"
-                android:layout_marginTop="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginLeft="16dp"
-                android:paddingTop="4dp"
-                android:layout_marginBottom="8dp"
-                android:textAlignment="center"
-                android:layout_width="164dp"
-                android:layout_height="32dp"
-                android:fontFamily="@font/neue_machine_regular"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:background="@drawable/text_choose_style"/>
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="164dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/text_choose_style"
+            android:fontFamily="@font/neue_machine_regular"
+            android:hint="Выберите дату"
+            android:paddingTop="4dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

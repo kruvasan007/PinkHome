@@ -1,13 +1,14 @@
 package com.example.pinkhome.model;
 
 public class TimeItem {
-    private String head, description, time;
+    private String head, description, day;
+    private int time;
 
-    public String getTime() {
+    public int getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(int time) {
         this.time = time;
     }
 
@@ -25,5 +26,13 @@ public class TimeItem {
 
     public void setHead(String head) {
         this.head = head;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 }
