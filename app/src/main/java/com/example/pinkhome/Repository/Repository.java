@@ -7,23 +7,18 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.pinkhome.model.Activities;
+import com.example.pinkhome.model.Events;
 import com.example.pinkhome.model.Task;
 import com.example.pinkhome.model.TimeItem;
-import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.MetadataChanges;
-import com.google.gson.internal.bind.JsonTreeReader;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,22 +44,23 @@ public class Repository {
                 .set(item);
     }
 
-    public LiveData<List<Activities>> listenActivities() {
-        MutableLiveData<List<Activities>> data = new MutableLiveData<>();
+    public LiveData<List<Events>> listenActivities() {
+        MutableLiveData<List<Events>> data = new MutableLiveData<>();
         CollectionReference collectionReference = db.collection("users").document(mAuth.getCurrentUser().getUid()).collection("activities");
         collectionReference.addSnapshotListener(MetadataChanges.INCLUDE, (value, e) -> {
             List<DocumentSnapshot> documentSnapshot = value.getDocuments();
-            List<Activities> activities = new ArrayList<>();
+            List<Events> activities = new ArrayList<>();
             for (DocumentSnapshot document : documentSnapshot) {
-                Activities activity = new Activities();
+                Events activity = new Events();
                 activity.setNameActivity(String.valueOf(document.getData().get("name")));
                 activity.setDate(String.valueOf(document.getData().get("date")));
+                activity.setColor(String.valueOf(document.getData().get("color")));
                 activities.add(activity);
             }
-            activities.sort(new Comparator<Activities>() {
+            activities.sort(new Comparator<Events>() {
                 DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
                 @Override
-                public int compare(Activities lhs, Activities rhs) {
+                public int compare(Events lhs, Events rhs) {
                     try {
                         return f.parse(lhs.getDate()).compareTo(f.parse(rhs.getDate()));
                     } catch (ParseException e) {

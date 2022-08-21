@@ -72,7 +72,7 @@ public class SettingsActivity extends BaseActivity {
         userViewModel.getUserName().observe(this, userName -> {
             nickName.setText(userName);
             if(userName != ""){
-                avatarView.setAvatarInitials(userName.split("")[1]);
+                avatarView.setAvatarInitials(userName.split("")[0]);
             }
             nickName.clearFocus();
         });

@@ -10,7 +10,7 @@
         android:duration="600"/>
     <objectAnimator
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:duration="1000"
+        android:duration="500"
         android:interpolator="@android:anim/accelerate_decelerate_interpolator"
         android:propertyName="x"
         android:valueFrom="0"

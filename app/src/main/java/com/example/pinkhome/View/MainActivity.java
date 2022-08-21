@@ -27,6 +27,7 @@ import com.example.pinkhome.BaseActivity;
 import com.example.pinkhome.Day;
 import com.example.pinkhome.Fragments.EventsFragment;
 import com.example.pinkhome.Fragments.TaskFragment;
+import com.example.pinkhome.Fragments.TaskListFragment;
 import com.example.pinkhome.R;
 import com.example.pinkhome.ViewModel.TimeViewModel;
 import com.example.pinkhome.ViewModel.UserViewModel;
@@ -41,18 +42,19 @@ import java.util.Calendar;
 import io.getstream.avatarview.AvatarView;
 
 public class MainActivity extends BaseActivity {
-    private RecyclerView  timeRecycler;
+    private RecyclerView timeRecycler;
 
     private TextView lastButton;
 
     private int time;
+    private View bottomPanel;
     private EditText input;
     private String head, descr;
     private ArrayList<TimeItem> timeItemList = new ArrayList<>();
     private UserViewModel userViewModel;
     private FragmentManager firstFragmentManager, secondFragmentManager;
     private String dayOfWeek;
-    private TextView username, dayText;
+    private TextView username;
     private AvatarView avatarView;
     private TimeAdapter timeAdapter;
     private ImageButton settings;
@@ -61,7 +63,7 @@ public class MainActivity extends BaseActivity {
     private ProgressBar progressBarUser;
     private TimeViewModel timeViewModel;
     private TaskFragment mainTaskFragment;
-    private EventsFragment mainEventFragment;
+    private EventsFragment mainEventFragment, eventsFragment;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -80,7 +82,6 @@ public class MainActivity extends BaseActivity {
         mainButton.setOnClickListener(v -> toMain());
 
         addTimeItemButton.setOnClickListener(v -> addTimeItem());
-        dayText.setText(Day.valueOf("DAY_"+dayOfWeek).getDay());
     }
 
     private void addTimeItem() {
@@ -118,7 +119,7 @@ public class MainActivity extends BaseActivity {
     private void getDescription() {
         input = new EditText(this);
         input.setMaxWidth(15);
-        input.setPadding(8,8,8,8);
+        input.setPadding(8, 8, 8, 8);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -147,7 +148,7 @@ public class MainActivity extends BaseActivity {
             if (userName != null) {
                 username.setText(userName);
                 if (!userName.equals("")) {
-                    avatarView.setAvatarInitials(userName.split("")[1]);
+                    avatarView.setAvatarInitials(userName.split("")[0]);
                 }
             } else username.setText("");
         });
@@ -159,21 +160,16 @@ public class MainActivity extends BaseActivity {
         progressBarUser = mainContent.findViewById(R.id.progressUser);
         avatarView = mainContent.findViewById(R.id.user).findViewById(R.id.avatar);
 
-        firstFragmentManager = getSupportFragmentManager();
         mainTaskFragment = new TaskFragment();
-        firstFragmentManager.beginTransaction()
-                .replace(R.id.first_container, mainTaskFragment)
-                .addToBackStack("main").commit();
-
-        secondFragmentManager = getSupportFragmentManager();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.first_container, mainTaskFragment).commit();
         mainEventFragment = new EventsFragment();
-        mainEventFragment.setVisibilityCard(false);
-        secondFragmentManager.beginTransaction()
-                .replace(R.id.two_container, mainEventFragment).commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.two_container, mainEventFragment).addToBackStack("main_event").commit();
 
-        dayText = mainContent.findViewById(R.id.day_of_week);
         settings = mainContent.findViewById(R.id.settings_button);
 
+        bottomPanel = findViewById(R.id.bottom_schedule);
         //category button
         tasksButton = mainContent.findViewById(R.id.category).findViewById(R.id.task);
         mainButton = mainContent.findViewById(R.id.category).findViewById(R.id.all_button);
@@ -208,11 +204,16 @@ public class MainActivity extends BaseActivity {
 
     @SuppressLint("PrivateResource")
     private void toEvents() {
-        lastButton.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-        eventsButton.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        lastButton = eventsButton;
-        firstFragmentManager.popBackStack("main", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        mainEventFragment.setVisibilityCard(true);
+        if(lastButton != eventsButton) {
+            bottomPanel.setVisibility(View.INVISIBLE);
+            eventsFragment = new EventsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.first_container, eventsFragment).runOnCommit(() -> eventsFragment.setVisibilityCard(true)).commit();
+            if (lastButton == mainButton)
+                getSupportFragmentManager().popBackStack("main_event", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            lastButton.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            eventsButton.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            lastButton = eventsButton;
+        }
     }
 
     private void toSettings() {
@@ -222,15 +223,34 @@ public class MainActivity extends BaseActivity {
     }
 
     private void toTasks() {
+        if(lastButton != tasksButton) {
+            bottomPanel.setVisibility(View.INVISIBLE);
+            if (lastButton == mainButton)
+                getSupportFragmentManager().popBackStack("main_event", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            TaskListFragment taskListFragment = new TaskListFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.first_container, taskListFragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+            lastButton.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            tasksButton.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            lastButton = tasksButton;
+        }
     }
 
-    private void toMain(){
-        lastButton.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-        mainButton.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        lastButton = mainButton;
-        firstFragmentManager.beginTransaction()
-                .setCustomAnimations(R.animator.slide_in_left, R.animator.fade_in)
-                .replace(R.id.first_container, new TaskFragment()).addToBackStack("main").commit();
-        mainEventFragment.setVisibilityCard(false);
+    private void toMain() {
+        bottomPanel.setVisibility(View.VISIBLE);
+        if(lastButton != mainButton){
+            lastButton.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+            mainButton.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            lastButton = mainButton;
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.first_container, new TaskFragment()).commit();
+            eventsFragment = new EventsFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.two_container, eventsFragment)
+                    .addToBackStack("main_event")
+                    .commit();
+        }
     }
+
 }

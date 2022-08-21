@@ -9,5 +9,4 @@
         android:valueTo="1280"
         android:valueFrom="0"
         android:duration="1500"/>
-
 </set>

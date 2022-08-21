@@ -4,24 +4,22 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pinkhome.model.Activities;
+import com.example.pinkhome.model.Events;
 import com.example.pinkhome.R;
 
 import java.util.ArrayList;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
-    private ArrayList<Activities> activities;
+    private ArrayList<Events> activities;
     private int snapPosition = RecyclerView.NO_POSITION;
     private int lastPosition = -1;
-    public EventAdapter(Context context, ArrayList<Activities> activities){
+    public EventAdapter(Context context, ArrayList<Events> activities){
         this.activities = activities;
     }
 
@@ -68,9 +66,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             squareView = itemView.findViewById(R.id.square);
         }
 
-        public void bind(Activities item){
+        public void bind(Events item){
             nameView.setText(item.getNameActivity());
             dateView.setText(item.getDate());
+            if(!item.getColor().equals("null")){
+                squareView.setBackgroundColor(Integer.parseInt(item.getColor()));
+            }
         }
     }
 }

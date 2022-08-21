@@ -1,10 +1,12 @@
 package com.example.pinkhome.model;
 
-public class Activities {
+public class Events {
 
     private String nameActivity;
 
     private String date;
+
+    private String color;
 
     public String getDate() {
         return date;
@@ -20,5 +22,13 @@ public class Activities {
 
     public void setNameActivity(String nameActivity) {
         this.nameActivity = nameActivity;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

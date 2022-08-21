@@ -1,141 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/main_content"
-    android:layout_height="wrap_content"
-    android:background="@color/white_gray">
-
+    android:scrollbars="none"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/header"
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/white">
 
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progressUser"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="52dp"
-            android:indeterminate="true"
-            android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/user"
-            app:layout_constraintLeft_toLeftOf="@+id/user"
-            app:layout_constraintTop_toTopOf="@+id/user" />
-
-        <LinearLayout
-            android:id="@+id/user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <io.getstream.avatarview.AvatarView
-                android:id="@+id/avatar"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                app:avatarViewInitials="AB"
-                app:avatarViewInitialsBackgroundColor="@color/white"
-                app:avatarViewInitialsTextColor="@color/pink"
-                app:avatarViewInitialsTextSize="14sp"
-                app:avatarViewInitialsTextSizeRatio="0.33"
-                app:avatarViewInitialsTextStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/back_button" />
-
-            <TextView
-                android:id="@+id/login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/neue_machine_regular"
-                android:paddingStart="8dp"
-                android:text="Здесь был ник"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/settings_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:padding="8dp"
-            android:src="@drawable/ic_settings"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/black" />
-
-        <LinearLayout
-            android:id="@+id/category"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="fill"
+            android:background="@color/green_white"
+            android:padding="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/all_button"
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressUser"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="52dp"
+                android:indeterminate="true"
+                android:padding="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/user"
+                app:layout_constraintLeft_toLeftOf="@+id/user"
+                app:layout_constraintTop_toTopOf="@+id/user" />
+
+            <LinearLayout
+                android:id="@+id/user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/neue_machine_regular"
-                android:padding="8dp"
-                android:text="Все" />
+                android:gravity="center_vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/event"
+                <io.getstream.avatarview.AvatarView
+                    android:id="@+id/avatar"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    app:avatarViewInitials="AB"
+                    app:avatarViewInitialsBackgroundColor="@color/white"
+                    app:avatarViewInitialsTextColor="@color/pink"
+                    app:avatarViewInitialsTextSize="14sp"
+                    app:avatarViewInitialsTextSizeRatio="0.33"
+                    app:avatarViewInitialsTextStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@+id/back_button" />
+
+                <TextView
+                    android:id="@+id/login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/neue_machine_regular"
+                    android:paddingStart="8dp"
+                    android:text="Здесь был ник"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/settings_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/neue_machine_regular"
+                android:background="@null"
                 android:padding="8dp"
-                android:text="События" />
+                android:src="@drawable/ic_settings"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/black" />
 
-            <TextView
-                android:id="@+id/task"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/category"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/neue_machine_regular"
-                android:padding="8dp"
-                android:text="Дела" />
-        </LinearLayout>
+                android:layout_marginTop="16dp"
+                android:gravity="fill"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user">
+
+                <TextView
+                    android:id="@+id/all_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/neue_machine_regular"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Главная"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/neue_machine_regular"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="События"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/task"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/neue_machine_regular"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Дела"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/first_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header" />
+
+        <FrameLayout
+            android:id="@+id/two_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/first_container" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <TextView
-        android:id="@+id/day_of_week"
-        app:layout_constraintTop_toBottomOf="@+id/header"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="36dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/neue_machine_ultrabold"
-        android:text="Понедельник"/>
-
-
-    <FrameLayout
-        app:layout_constraintTop_toBottomOf="@+id/day_of_week"
-        android:id="@+id/first_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/two_container"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/first_container"
-        />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
