@@ -22,16 +22,14 @@ public class EventsViewModel extends AndroidViewModel {
     public EventsViewModel(@NonNull Application application) {
         super(application);
         repository = new Repository();
-        this.activitiesLiveData = repository.listenActivities();
     }
 
     public void deleteActivities(String name){
         repository.deleteItem(name,"activities");
-
         Toast.makeText(getApplication().getBaseContext(), "Delete",Toast.LENGTH_SHORT).show();
     }
 
-    public LiveData<List<Events>> listenActivitiesResponse(){ return activitiesLiveData; }
+    public LiveData<List<Events>> listenActivitiesResponse(){ return repository.listenActivities(); }
 
     public void createActivities(String name, String date, String color) {
         if(!name.equals("") && !date.equals("")){

@@ -52,7 +52,6 @@ public class MainActivity extends BaseActivity {
     private String head, descr;
     private ArrayList<TimeItem> timeItemList = new ArrayList<>();
     private UserViewModel userViewModel;
-    private FragmentManager firstFragmentManager, secondFragmentManager;
     private String dayOfWeek;
     private TextView username;
     private AvatarView avatarView;

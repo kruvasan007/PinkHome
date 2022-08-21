@@ -163,6 +163,8 @@ public class EventsFragment extends Fragment{
             } else {
                 Events activities = new Events();
                 activities.setNameActivity("Событий нет");
+                activities.setDate("");
+                activities.setColor(String.valueOf(R.color.green_white));
                 eventsArrayList.add(activities);
                 adapterActivities.notifyDataSetChanged();
             }

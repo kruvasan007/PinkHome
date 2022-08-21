@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Repository {
     final private FirebaseAuth mAuth;
@@ -80,8 +81,7 @@ public class Repository {
             List<DocumentSnapshot> documentSnapshot = value.getDocuments();
             List<TimeItem> times = new ArrayList<>();
             for (DocumentSnapshot document : documentSnapshot) {
-                System.out.println(day+" "+ document.getData().get("day"));
-                if(document.getData().get("day").equals(day)){
+                if(Objects.requireNonNull(document.getData()).get("day").equals(day)){
                     TimeItem timeItem = new TimeItem();
                     timeItem.setHead(String.valueOf(document.getData().get("head")));
                     timeItem.setDescription(String.valueOf(document.getData().get("description")));
